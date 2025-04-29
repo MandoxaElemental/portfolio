@@ -8,8 +8,8 @@ export default function Home() {
 
   return (
     <>
- {/* Loader screen */}
- {!loaded ? (
+  {/* Loader screen */}
+  {!loaded ? (
         <SlotMachineLoader onComplete={() => setLoaded(true)} />
       ) : (
         <motion.main
@@ -19,8 +19,7 @@ export default function Home() {
           exit={{ opacity: 0 }}
           transition={{ duration: 1 }}
         >
-          <h1 className="text-5xl font-bold">Welcome to GPR's Portfolio</h1>
-          {/* Your content here */}
+          <h1 className="text-5xl font-bold">Welcome to GPR Portfolio</h1>
         </motion.main>
       )}
     </>
