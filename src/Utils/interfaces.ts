@@ -10,11 +10,13 @@ export const projects = [
     name: 'PlatO - Share Your Meal',
     description: 'A full-stack social food-sharing platform built with Next.js.',
     link: 'https://github.com/MandoxaElemental/PlatO-Official-Repo',
+    thumbnail: '/assets/PlatO.png'
   },
   {
     name: 'Pokémon API App',
     description: 'Next.js app that fetches Pokémon data and saves favorites to localStorage.',
     link: 'https://github.com/MandoxaElemental/pokemon-api-next',
+    thumbnail: '/assets/PokemonAPI.png'
   },
 ];
 
@@ -23,5 +25,5 @@ export const contact = {
   email: 'gprcards@gmail.com',
   linkedin: 'https://www.linkedin.com/in/gianpaolo-reinares-jr-dev/',
   github: 'https://github.com/MandoxaElemental',
-  resume: '/resume.pdf',
+  resume: '/assets/Gianpaolo-Reinares-Web-Developer-Resume.pdf',
 };

@@ -53,7 +53,6 @@ const SlotMachineIcons: React.FC<Props> = ({ targetIcons }) => {
         intervals.push(interval);
       });
     } else {
-      // When leaving the section, spin again
       setLocked(targetIcons.map(() => false));
       const spinInterval = setInterval(() => {
         setSlots(targetIcons.map(() =>
