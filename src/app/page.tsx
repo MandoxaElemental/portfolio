@@ -7,6 +7,8 @@ import TransitionIcons from './Components/TransitionIcons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { contact, projects } from '@/Utils/interfaces';
 import { useInView } from 'react-intersection-observer';
+import { useRef } from 'react';
+import { forwardRef } from 'react';
 
 const sectionBackgrounds: Record<string, string> = {
   welcome: 'bg-gradient-to-br from-[#8B0000] via-[#B22222] to-black',
@@ -23,16 +25,25 @@ const suits = [
   { src: '/assets/suit-heart-fill.svg', color: 'red' },
 ];
 
-function Section({
-  id,
-  setActiveSection,
-  children,
-}: {
-  id: string;
-  setActiveSection: (id: string) => void;
-  children: React.ReactNode;
-}) {
-  const { ref, inView } = useInView({ threshold: 0.5 });
+const Section = forwardRef(function Section(
+  {
+    id,
+    setActiveSection,
+    children,
+  }: {
+    id: string;
+    setActiveSection: (id: string) => void;
+    children: React.ReactNode;
+  },
+  ref: React.Ref<HTMLElement>
+) {
+  const { ref: inViewRef, inView } = useInView({ threshold: 0.5 });
+
+  const setRefs = (node: HTMLElement) => {
+    if (typeof ref === 'function') ref(node);
+    else if (ref) (ref as React.RefObject<HTMLElement | undefined>).current = node;
+    inViewRef(node);
+  };
 
   useEffect(() => {
     if (inView) setActiveSection(id);
@@ -40,7 +51,7 @@ function Section({
 
   return (
     <motion.section
-      ref={ref}
+      ref={setRefs}
       className="h-screen snap-start flex flex-col justify-center px-10"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
@@ -49,7 +60,7 @@ function Section({
       {children}
     </motion.section>
   );
-}
+});
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
@@ -57,10 +68,35 @@ export default function Home() {
   const [showTransitionIcons, setShowTransitionIcons] = useState(false);
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const currentIndex = sectionOrder.indexOf(activeSection);
+  
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+        const nextIndex = Math.min(currentIndex + 1, sectionOrder.length - 1);
+        const nextSection = sectionOrder[nextIndex];
+        sectionRefs.current[nextSection]?.scrollIntoView({ behavior: 'smooth' });      }
+  
+      if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        const prevIndex = Math.max(currentIndex - 1, 0);
+        const prevSection = sectionOrder[prevIndex];
+        sectionRefs.current[prevSection]?.scrollIntoView({ behavior: 'smooth' });      }
+    };
+  
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeSection]);
+  
+
+  useEffect(() => {
     setShowTransitionIcons(true);
     const timer = setTimeout(() => setShowTransitionIcons(false), 750);
     return () => clearTimeout(timer);
   }, [activeSection]);
+
+  const sectionOrder = ['welcome', 'about', 'projects', 'skills', 'contact'];
+  const sectionRefs = useRef<Record<string, HTMLElement | undefined>>(
+    Object.fromEntries(sectionOrder.map((key) => [key, undefined]))
+  );
 
   return (
     <>
@@ -81,13 +117,29 @@ export default function Home() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1 }}
           >
-            <Section id="welcome" setActiveSection={setActiveSection}>
+            <Section id="welcome" setActiveSection={setActiveSection} ref={(el) => {if (el) sectionRefs.current.welcome = el;}}>
               <h1 className="text-5xl font-bold">Welcome to GPR&apos;s Portfolio</h1>
             </Section>
 
-            <Section id="about" setActiveSection={setActiveSection}>
+            <Section id="about" setActiveSection={setActiveSection} ref={(el) => {if (el) sectionRefs.current.about = el;}}>
               <h2 className="text-3xl font-semibold">About Me</h2>
-              <div className="mt-2 text-lg">
+              <div className="relative mt-2 text-lg bg-[#f4f4f46f] p-6 rounded-2xl border-solid border-black border-2">
+              
+              <div className="absolute top-2 left-2 ">
+              <img src={"/assets/suit-club-fill.svg"} alt="suit" className="w-5 h-5 opacity-80" />
+              </div>
+
+              <div className="absolute top-2 right-2 ">
+              <img src={"/assets/suit-heart-fill.svg"} alt="suit" className="w-5 h-5 opacity-80" />
+              </div>
+
+              <div className="absolute bottom-2 left-2 ">
+              <img src={"/assets/suit-diamond-fill.svg"} alt="suit" className="w-5 h-5 opacity-80" />
+              </div>
+
+              <div className="absolute bottom-2 right-2 ">
+                <img src={"/assets/suit-spade-fill.svg"} alt="suit" className="w-5 h-5 opacity-80" />
+              </div>
                 <p className='mt-2'>Hi, I&apos;m Gianpaolo Raphael N. Reinares, a Junior Web Developer based in Stockton, CA. I specialize in building responsive and scalable web applications using modern technologies like TypeScript, React, and Next.js.</p>
                 <p className='mt-2'>As a student from CodeStack Academy, I&apos;ve logged over 1000 hours of hands-on, full-time training in full-stack web development, cloud deployment, and RESTful APIs. I led the development of PlatO, a full-stack social platform with real-time features, authentication, and post sharing.</p>
                 <p className='mt-2'>
@@ -95,7 +147,7 @@ export default function Home() {
               </div>
             </Section>
 
-            <Section id="projects" setActiveSection={setActiveSection}>
+            <Section id="projects" setActiveSection={setActiveSection} ref={(el) => {if (el) sectionRefs.current.projects = el;}}>
               <h2 className="text-3xl font-semibold">Projects</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
   {projects.map((project, i) => {
@@ -142,7 +194,7 @@ export default function Home() {
 
             </Section>
 
-            <Section id="skills" setActiveSection={setActiveSection}>
+            <Section id="skills" setActiveSection={setActiveSection} ref={(el) => {if (el) sectionRefs.current.skills = el;}}>
               <h2 className="text-3xl font-semibold">Skills</h2>
               <h2 className="text-2xl font-semibold mt-4 text-center">Languages</h2>
               <SlotMachineIcons
@@ -168,7 +220,7 @@ export default function Home() {
               />
             </Section>
 
-            <Section id="contact" setActiveSection={setActiveSection}>
+            <Section id="contact" setActiveSection={setActiveSection} ref={(el) => {if (el) sectionRefs.current.contact = el;}}>
   <h2 className="text-4xl font-bold mb-6 text-center">Contact</h2>
   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
   {[
