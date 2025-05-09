@@ -89,6 +89,7 @@ export default function Home() {
               <h2 className="text-3xl font-semibold">About Me</h2>
               <div className="mt-2 text-lg">
                 <p className='mt-2'>Hi, I&apos;m Gianpaolo Raphael N. Reinares, a Junior Web Developer based in Stockton, CA. I specialize in building responsive and scalable web applications using modern technologies like TypeScript, React, and Next.js.</p>
+                <p className='mt-2'>As a student from CodeStack Academy, I&apos;ve logged over 1000 hours of hands-on, full-time training in full-stack web development, cloud deployment, and RESTful APIs. I led the development of PlatO, a full-stack social platform with real-time features, authentication, and post sharing.</p>
                 <p className='mt-2'>
                 Outside of coding, I&apos;ve worked as a remote inventory assistant and freelance graphic designer, sharpening my communication and organizational skills. I&apos;m highly collaborative, quick to adapt, and excited to grow within a creative and fast-paced development team.</p>
               </div>
@@ -230,44 +231,46 @@ export default function Home() {
   const suit = suits[i % suits.length];
   return (
     <motion.div
-      key={card.title}
-      className={`relative bg-white rounded-xl shadow-md p-6 w-64 h-80 border-2 ${
-        suit.color === 'red' ? 'border-red-600 text-red-700' : 'border-black text-black'
-      } text-center font-serif [transform-style:preserve-3d]`}
-      initial={{ rotateY: -90, y: 100, opacity: 0 }}
-      whileInView={{
-        rotateY: 0,
-        y: 0,
-        opacity: 1,
-        transition: {
-          delay: i * 0.3,
-          duration: 0.8,
-          ease: 'easeOut',
-        },
-      }}
-      viewport={{ once: true }}
-      whileHover={{ rotate: i % 2 === 0 ? -3 : 3, scale: 1.05 }}
-    >
-      <img
-        src={suit.src}
-        alt="suit"
-        className="absolute top-3 left-3 w-5 h-5"
-      />
-      <img
-        src={suit.src}
-        alt="suit"
-        className="absolute bottom-3 right-3 w-5 h-5 rotate-180"
-      />
+  key={card.title}
+  className={`relative bg-white rounded-xl shadow-md p-6 w-64 h-80 border-2 ${
+    suit.color === 'red' ? 'border-red-600 text-red-700' : 'border-black text-black'
+  } text-center font-serif [transform-style:preserve-3d] flex flex-col justify-center items-center`}
+  initial={{ rotateY: -90, y: 100, opacity: 0 }}
+  whileInView={{
+    rotateY: 0,
+    y: 0,
+    opacity: 1,
+    transition: {
+      delay: i * 0.3,
+      duration: 0.8,
+      ease: 'easeOut',
+    },
+  }}
+  viewport={{ once: true }}
+  whileHover={{ rotate: i % 2 === 0 ? -3 : 3, scale: 1.05 }}
+>
+  <img
+    src={suit.src}
+    alt="suit"
+    className="absolute top-3 left-3 w-5 h-5"
+  />
+  <img
+    src={suit.src}
+    alt="suit"
+    className="absolute bottom-3 right-3 w-5 h-5 rotate-180"
+  />
 
-      <img
-        src={card.icon}
-        alt={`${card.title} icon`}
-        className="mx-auto w-10 h-10 mb-2"
-      />
+  <div className="flex flex-col items-center justify-center text-center">
+    <img
+      src={card.icon}
+      alt={`${card.title} icon`}
+      className="w-10 h-10 mb-2"
+    />
+    <h3 className="text-2xl font-bold mb-3">{card.title}</h3>
+    {card.content}
+  </div>
+</motion.div>
 
-      <h3 className="text-2xl font-bold mb-3">{card.title}</h3>
-      {card.content}
-    </motion.div>
   );
 })}
   </div>

@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
 
 const fallbackIcons = [
-  'bootstrap.png', 'cs.png', 'css.png', 'html.png', 'js.png', 'next.png', 'react.png', 'shadcn.png', 'ts.png', 'tailwind.png'
+  'bootstrap.png', 'cs.png', 'css.png', 'html.png', 'js.png',
+  'next.png', 'react.png', 'shadcn.png', 'ts.png', 'tailwind.png'
 ];
 
 type Props = {
@@ -35,7 +35,7 @@ const SlotMachineIcons: React.FC<Props> = ({ targetIcons }) => {
 
           count++;
 
-          if (count > 15 + i * 4) {
+          if (count > 8 + i * 2) {
             clearInterval(interval);
             setSlots((prev) => {
               const updated = [...prev];
@@ -49,7 +49,7 @@ const SlotMachineIcons: React.FC<Props> = ({ targetIcons }) => {
               return updated;
             });
           }
-        }, 80 - i * 10);
+        }, 60 - i * 8);
         intervals.push(interval);
       });
     } else {
@@ -71,8 +71,8 @@ const SlotMachineIcons: React.FC<Props> = ({ targetIcons }) => {
         <motion.div
           key={i}
           initial={{ scale: 0.9 }}
-          animate={{ scale: locked[i] ? 1.2 : 1, rotate: [0, 15, -15, 0] }}
-          transition={{ duration: 0.6 }}
+          animate={{ scale: locked[i] ? 1.2 : 1, rotate: [0, 10, -10, 0] }}
+          transition={{ duration: 0.4 }}
           className="w-20 h-20 rounded-lg border-2 border-gray-300 bg-white shadow-md flex items-center justify-center"
         >
           {icon && (
