@@ -29,5 +29,5 @@
 [Portfolio Rebuild - Vercel Link](https://gpreinares-portfolio.vercel.app/)
 
 
-This has been Peer Reviewed By: 
-> Comments: 
+This has been Peer Reviewed By: Chris Wells-Hott
+> Comments: The site is very good along with the animations. I really like how when you scroll the background color changes. very cool.
