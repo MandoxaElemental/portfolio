@@ -13,15 +13,6 @@
 - Email
 - Links to LinkedIn, GitHub, and Resume
 
-
-### Things to turn in:
-- Must have Peer review
-- Links in Text Field
-    * azure or vercel
-    * github
-    * original figma link
-
-
 ### Portfolio_GitHub Repository Link:
 [Portfolio GitHub Repository Link](https://github.com/MandoxaElemental/my-app)
 
