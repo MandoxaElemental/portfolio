@@ -18,6 +18,12 @@ export const projects = [
     link: 'https://github.com/MandoxaElemental/pokemon-api-next',
     thumbnail: '/assets/PokemonAPI.png'
   },
+  {
+    name: 'RPSLS - Pokémon Edition',
+    description: 'Rock, Paper, Scissors, Lizard, Spock with both vs Player or CPU mode',
+    link: 'https://github.com/MandoxaElemental/Rock-Paper-Scissor-Lizard-Spock-Project',
+    thumbnail: '/assets/RPSLS.png'
+  },
 ];
 
 export const contact = {
