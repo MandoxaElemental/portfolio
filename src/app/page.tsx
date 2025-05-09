@@ -5,7 +5,7 @@ import SlotMachineLoader from './Components/SlotMachineLoader';
 import SlotMachineIcons from './Components/SlotMachineIcons';
 import TransitionIcons from './Components/TransitionIcons';
 import { motion, AnimatePresence } from 'framer-motion';
-import { aboutMe, contact, projects } from '@/Utils/interfaces';
+import { contact, projects } from '@/Utils/interfaces';
 import { useInView } from 'react-intersection-observer';
 
 const sectionBackgrounds: Record<string, string> = {
@@ -82,12 +82,16 @@ export default function Home() {
             transition={{ duration: 1 }}
           >
             <Section id="welcome" setActiveSection={setActiveSection}>
-              <h1 className="text-5xl font-bold">Welcome to GPR Portfolio</h1>
+              <h1 className="text-5xl font-bold">Welcome to GPR&apos; Portfolio</h1>
             </Section>
 
             <Section id="about" setActiveSection={setActiveSection}>
               <h2 className="text-3xl font-semibold">About Me</h2>
-              <p className="mt-2 text-lg">{aboutMe}</p>
+              <div className="mt-2 text-lg">
+                <p className='mt-2'>Hi, I&apos;m Gianpaolo Raphael N. Reinares, a Junior Web Developer based in Stockton, CA. I specialize in building responsive and scalable web applications using modern technologies like TypeScript, React, and Next.js.</p>
+                <p className='mt-2'>
+                Outside of coding, I&apos;ve worked as a remote inventory assistant and freelance graphic designer, sharpening my communication and organizational skills. I&apos;m highly collaborative, quick to adapt, and excited to grow within a creative and fast-paced development team.</p>
+              </div>
             </Section>
 
             <Section id="projects" setActiveSection={setActiveSection}>
@@ -126,7 +130,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="mt-2 text-blue-400 underline hover:text-blue-300"
           >
-            View Project
+            View Project Repository
           </a>
         </div>
       </motion.div>

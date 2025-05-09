@@ -1,5 +1,3 @@
-export const aboutMe = `Hello World`;
-
 export const skills = [
   'TypeScript', 'JavaScript', 'React.js', 'Next.js',
   'Tailwind CSS', 'Node.js', 'SQL', 'GitHub', 'Azure',
