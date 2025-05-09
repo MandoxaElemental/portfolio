@@ -82,7 +82,7 @@ export default function Home() {
             transition={{ duration: 1 }}
           >
             <Section id="welcome" setActiveSection={setActiveSection}>
-              <h1 className="text-5xl font-bold">Welcome to GPR&apos; Portfolio</h1>
+              <h1 className="text-5xl font-bold">Welcome to GPR&apos;s Portfolio</h1>
             </Section>
 
             <Section id="about" setActiveSection={setActiveSection}>
