@@ -9,19 +9,20 @@ import { contact, projects } from '@/Utils/interfaces';
 import { useInView } from 'react-intersection-observer';
 import { useRef } from 'react';
 import { forwardRef } from 'react';
+import { FaBars } from 'react-icons/fa';
 
 const sectionBackgrounds: Record<string, string> = {
-  welcome: 'bg-gradient-to-br from-[#8B0000] via-[#B22222] to-black',
+  welcome: 'bg-gradient-to-br from-[#F32735] via-[#B22222] to-black',
   about: 'bg-gradient-to-br from-[#FFF8DC] via-[#F5F5DC] to-[#2F4F4F]',
-  projects: 'bg-gradient-to-br from-[#013220] via-[#006400] to-black',
+  projects: 'bg-gradient-to-br from-black via-[#F32735] to-black',
   skills: 'bg-gradient-to-br from-black via-[#1C1C1C] to-[#2F4F4F]',
-  contact: 'bg-gradient-to-br from-[#FFD700] via-[#FFB700] to-black'
+  contact: 'bg-gradient-to-br from-[#FFF8DC] via-[#F5F5DC] to-[#2F4F4F]'
 };
 
 
 const suits = [
-  { src: '/assets/suit-club-fill.svg', color: 'black' },
   { src: '/assets/suit-diamond-fill.svg', color: 'red' },
+  { src: '/assets/suit-club-fill.svg', color: 'black' },
   { src: '/assets/suit-heart-fill.svg', color: 'red' },
 ];
 
@@ -66,6 +67,7 @@ export default function Home() {
   const [loaded, setLoaded] = useState(false);
   const [activeSection, setActiveSection] = useState('welcome');
   const [showTransitionIcons, setShowTransitionIcons] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -107,6 +109,45 @@ export default function Home() {
           <AnimatePresence>
             {showTransitionIcons && <TransitionIcons />}
           </AnimatePresence>
+<motion.button
+  onClick={() => setIsNavOpen((prev) => !prev)}
+  className="cursor-pointer fixed top-4 right-4 z-50 p-3 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-80"
+  aria-label="Toggle Navigation Menu"
+  animate={{ rotate: isNavOpen ? 90 : 0 }}
+  transition={{ duration: 0.3 }}
+>
+  <FaBars size={20} />
+</motion.button>
+
+<AnimatePresence>
+  {isNavOpen && (
+    <motion.div
+      key="nav"
+      className="fixed inset-0 bg-black bg-opacity-80 flex flex-col pr-20 items-end justify-center z-40"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <ul className="space-y-6 text-white text-4xl font-bold">
+        {sectionOrder.map((section) => (
+          <li key={section}>
+            <button
+              onClick={() => {
+                sectionRefs.current[section]?.scrollIntoView({ behavior: 'smooth' });
+                setIsNavOpen(false);
+              }}
+              className="hover:text-red-400 hover:underline transition cursor-pointer"
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  )}
+</AnimatePresence>
+
 
           <motion.main
   className={`h-screen overflow-y-scroll snap-y snap-mandatory transition-colors duration-1000 ${
@@ -122,8 +163,8 @@ export default function Home() {
             </Section>
 
             <Section id="about" setActiveSection={setActiveSection} ref={(el) => {if (el) sectionRefs.current.about = el;}}>
-              <h2 className="text-3xl font-semibold">About Me</h2>
-              <div className="relative mt-2 text-lg bg-[#f4f4f46f] p-6 rounded-2xl border-solid border-black border-2">
+              <h2 className="text-3xl font-semibold underline">About Me</h2>
+              <div className="relative mt-2 text-lg bg-[#f4f4f46f] p-6 rounded-2xl shadow-xl">
               
               <div className="absolute top-2 left-2 ">
               <img src={"/assets/suit-club-fill.svg"} alt="suit" className="w-5 h-5 opacity-80" />
@@ -148,7 +189,7 @@ export default function Home() {
             </Section>
 
             <Section id="projects" setActiveSection={setActiveSection} ref={(el) => {if (el) sectionRefs.current.projects = el;}}>
-              <h2 className="text-3xl font-semibold">Projects</h2>
+              <h2 className="text-3xl font-semibold underline">Projects</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
   {projects.map((project, i) => {
     const suit = suits[i % suits.length];
@@ -195,7 +236,7 @@ export default function Home() {
             </Section>
 
             <Section id="skills" setActiveSection={setActiveSection} ref={(el) => {if (el) sectionRefs.current.skills = el;}}>
-              <h2 className="text-3xl font-semibold">Skills</h2>
+              <h2 className="text-3xl font-semibold underline">Skills</h2>
               <h2 className="text-2xl font-semibold mt-4 text-center">Languages</h2>
               <SlotMachineIcons
                 targetIcons={[
@@ -221,7 +262,7 @@ export default function Home() {
             </Section>
 
             <Section id="contact" setActiveSection={setActiveSection} ref={(el) => {if (el) sectionRefs.current.contact = el;}}>
-  <h2 className="text-4xl font-bold mb-6 text-center">Contact</h2>
+  <h2 className="text-4xl font-bold mb-6 text-center underline">Contact</h2>
   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
   {[
   {
@@ -286,7 +327,7 @@ export default function Home() {
   key={card.title}
   className={`relative bg-white rounded-xl shadow-md p-6 w-64 h-80 border-2 ${
     suit.color === 'red' ? 'border-red-600 text-red-700' : 'border-black text-black'
-  } text-center font-serif [transform-style:preserve-3d] flex flex-col justify-center items-center`}
+  } text-center font-serif [transform-style:preserve-3d] flex flex-col justify-center items-center shadow-xl`}
   initial={{ rotateY: -90, y: 100, opacity: 0 }}
   whileInView={{
     rotateY: 0,

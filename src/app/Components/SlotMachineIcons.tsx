@@ -73,7 +73,7 @@ const SlotMachineIcons: React.FC<Props> = ({ targetIcons }) => {
           initial={{ scale: 0.9 }}
           animate={{ scale: locked[i] ? 1.2 : 1, rotate: [0, 10, -10, 0] }}
           transition={{ duration: 0.4 }}
-          className="w-20 h-20 rounded-lg border-2 border-gray-300 bg-white shadow-md flex items-center justify-center"
+          className="m-2 w-20 h-20 rounded-lg border-2 border-gray-300 bg-white shadow-md flex items-center justify-center"
         >
           {icon && (
             <Image
