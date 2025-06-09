@@ -123,7 +123,7 @@ export default function Home() {
   {isNavOpen && (
     <motion.div
       key="nav"
-      className="fixed inset-0 bg-black bg-opacity-80 flex flex-col pr-20 items-end justify-center z-40"
+      className="fixed inset-0 bg-gradient-to-r from-[#00000080] via-black to-black bg-opacity-80 flex flex-col pr-20 items-end justify-center z-40"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
