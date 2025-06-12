@@ -400,7 +400,7 @@ export default function Home() {
     <div className="bg-gray-900 rounded-lg p-6 w-full max-w-5xl relative">
       <button
         onClick={() => setShowSlotMachine(false)}
-        className="absolute top-2 right-2 text-gray-300 hover:text-white text-xl"
+        className="absolute top-2 right-4 text-gray-300 hover:text-white text-xl"
       >
         ✖
       </button>
@@ -415,7 +415,7 @@ export default function Home() {
     <div className="bg-gray-900 rounded-lg p-6 w-full max-w-5xl relative">
       <button
         onClick={() => setShowCardOpener(false)}
-        className="absolute top-2 right-2 text-gray-300 hover:text-white text-xl"
+        className="absolute top-2 right-4 text-gray-300 hover:text-white text-xl"
       >
         ✖
       </button>
