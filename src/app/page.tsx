@@ -1,24 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, forwardRef } from 'react';
 import SlotMachineLoader from './Components/SlotMachineLoader';
 import SlotMachineIcons from './Components/SlotMachineIcons';
 import TransitionIcons from './Components/TransitionIcons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { contact, projects } from '@/Utils/interfaces';
 import { useInView } from 'react-intersection-observer';
-import { useRef } from 'react';
-import { forwardRef } from 'react';
 import { FaBars } from 'react-icons/fa';
+import SlotMachine from './Components/SlotMachine';
+import { CardPackOpener } from './Components/CardPack';
 
 const sectionBackgrounds: Record<string, string> = {
   welcome: 'bg-gradient-to-br from-[#F32735] via-[#B22222] to-black',
   about: 'bg-gradient-to-br from-[#FFF8DC] via-[#F5F5DC] to-[#2F4F4F]',
   projects: 'bg-gradient-to-br from-black via-[#F32735] to-black',
   skills: 'bg-gradient-to-br from-black via-[#1C1C1C] to-[#2F4F4F]',
-  contact: 'bg-gradient-to-br from-[#FFF8DC] via-[#F5F5DC] to-[#2F4F4F]'
+  contact: 'bg-gradient-to-br from-[#FFF8DC] via-[#F5F5DC] to-[#2F4F4F]',
+  fun: 'bg-gradient-to-br from-black via-[#1C1C1C] to-[#2F4F4F]',
 };
-
 
 const suits = [
   { src: '/assets/suit-diamond-fill.svg', color: 'red' },
@@ -68,26 +68,33 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState('welcome');
   const [showTransitionIcons, setShowTransitionIcons] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [flippedCards, setFlippedCards] = useState<boolean[]>([false, false, false]);
+  const [showSlotMachine, setShowSlotMachine] = useState(false);
+  const [showCardOpener, setShowCardOpener] = useState(false);
+
+  const sectionOrder = ['welcome', 'about', 'projects', 'skills', 'contact', 'fun'];
+  const sectionRefs = useRef<Record<string, HTMLElement | undefined>>(
+    Object.fromEntries(sectionOrder.map((key) => [key, undefined]))
+  );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const currentIndex = sectionOrder.indexOf(activeSection);
-  
+
       if (e.key === 'ArrowDown' || e.key === 'PageDown') {
         const nextIndex = Math.min(currentIndex + 1, sectionOrder.length - 1);
-        const nextSection = sectionOrder[nextIndex];
-        sectionRefs.current[nextSection]?.scrollIntoView({ behavior: 'smooth' });      }
-  
+        sectionRefs.current[sectionOrder[nextIndex]]?.scrollIntoView({ behavior: 'smooth' });
+      }
+
       if (e.key === 'ArrowUp' || e.key === 'PageUp') {
         const prevIndex = Math.max(currentIndex - 1, 0);
-        const prevSection = sectionOrder[prevIndex];
-        sectionRefs.current[prevSection]?.scrollIntoView({ behavior: 'smooth' });      }
+        sectionRefs.current[sectionOrder[prevIndex]]?.scrollIntoView({ behavior: 'smooth' });
+      }
     };
-  
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeSection]);
-  
 
   useEffect(() => {
     setShowTransitionIcons(true);
@@ -95,64 +102,61 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [activeSection]);
 
-  const sectionOrder = ['welcome', 'about', 'projects', 'skills', 'contact'];
-  const sectionRefs = useRef<Record<string, HTMLElement | undefined>>(
-    Object.fromEntries(sectionOrder.map((key) => [key, undefined]))
-  );
-
   return (
     <>
       {!loaded ? (
         <SlotMachineLoader onComplete={() => setLoaded(true)} />
       ) : (
         <>
+          <AnimatePresence>{showTransitionIcons && <TransitionIcons />}</AnimatePresence>
+
+          <motion.button
+            onClick={() => setIsNavOpen((prev) => !prev)}
+            className="cursor-pointer fixed top-4 right-4 z-50 p-3 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-80"
+            aria-label="Toggle Navigation Menu"
+            animate={{ rotate: isNavOpen ? 90 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <FaBars size={20} />
+          </motion.button>
+
           <AnimatePresence>
-            {showTransitionIcons && <TransitionIcons />}
+            {isNavOpen && (
+              <motion.div
+                key="nav"
+                className="fixed inset-0 bg-gradient-to-r from-[#00000080] via-black to-black bg-opacity-80 flex flex-col pr-20 items-end justify-center z-40"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ul className="space-y-6 text-white text-4xl font-bold">
+                  {sectionOrder.map((section) => (
+                    <li key={section}>
+                      <button
+                        onClick={() => {
+                          sectionRefs.current[section]?.scrollIntoView({ behavior: 'smooth' });
+                          setIsNavOpen(false);
+                        }}
+                        className="hover:text-red-400 hover:underline transition cursor-pointer"
+                      >
+                        {section.charAt(0).toUpperCase() + section.slice(1)}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
           </AnimatePresence>
-<motion.button
-  onClick={() => setIsNavOpen((prev) => !prev)}
-  className="cursor-pointer fixed top-4 right-4 z-50 p-3 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-80"
-  aria-label="Toggle Navigation Menu"
-  animate={{ rotate: isNavOpen ? 90 : 0 }}
-  transition={{ duration: 0.3 }}
->
-  <FaBars size={20} />
-</motion.button>
-
-<AnimatePresence>
-  {isNavOpen && (
-    <motion.div
-      key="nav"
-      className="fixed inset-0 bg-gradient-to-r from-[#00000080] via-black to-black bg-opacity-80 flex flex-col pr-20 items-end justify-center z-40"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <ul className="space-y-6 text-white text-4xl font-bold">
-        {sectionOrder.map((section) => (
-          <li key={section}>
-            <button
-              onClick={() => {
-                sectionRefs.current[section]?.scrollIntoView({ behavior: 'smooth' });
-                setIsNavOpen(false);
-              }}
-              className="hover:text-red-400 hover:underline transition cursor-pointer"
-            >
-              {section.charAt(0).toUpperCase() + section.slice(1)}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </motion.div>
-  )}
-</AnimatePresence>
-
 
           <motion.main
-  className={`h-screen overflow-y-scroll snap-y snap-mandatory transition-colors duration-1000 ${
-    sectionBackgrounds[activeSection]
-  } ${activeSection === 'about' || activeSection === 'contact' ? 'text-black' : 'text-white'}`}
+            className={`h-screen overflow-y-scroll snap-y snap-mandatory transition-colors duration-1000 ${
+              sectionBackgrounds[activeSection]
+            } ${
+              activeSection === 'about' || activeSection === 'contact'
+                ? 'text-black'
+                : 'text-white'
+            }`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -324,51 +328,101 @@ export default function Home() {
   const suit = suits[i % suits.length];
   return (
     <motion.div
-  key={card.title}
-  className={`relative bg-white rounded-xl shadow-md p-6 w-64 h-80 border-2 ${
-    suit.color === 'red' ? 'border-red-600 text-red-700' : 'border-black text-black'
-  } text-center font-serif [transform-style:preserve-3d] flex flex-col justify-center items-center shadow-xl`}
-  initial={{ rotateY: -90, y: 100, opacity: 0 }}
-  whileInView={{
-    rotateY: 0,
-    y: 0,
-    opacity: 1,
-    transition: {
-      delay: i * 0.3,
-      duration: 0.8,
-      ease: 'easeOut',
-    },
-  }}
-  viewport={{ once: true }}
-  whileHover={{ rotate: i % 2 === 0 ? -3 : 3, scale: 1.05 }}
->
-  <img
-    src={suit.src}
-    alt="suit"
-    className="absolute top-3 left-3 w-5 h-5"
-  />
-  <img
-    src={suit.src}
-    alt="suit"
-    className="absolute bottom-3 right-3 w-5 h-5 rotate-180"
-  />
+      key={card.title}
+      className={`relative w-64 h-80 [transform-style:preserve-3d] cursor-pointer`}
+      initial={{ rotateY: -90, y: 100, opacity: 0 }}
+      whileInView={{
+        rotateY: 0,
+        y: 0,
+        opacity: 1,
+        transition: {
+          delay: i * 0.3,
+          duration: 0.8,
+          ease: 'easeOut',
+        },
+      }}
+      viewport={{ once: true }}
+      whileHover={{ rotate: i % 2 === 0 ? -3 : 3, scale: 1.05 }}
+      onClick={() =>
+  setFlippedCards((prev) => {
+    const newFlipped = [...prev];
+    newFlipped[i] = !newFlipped[i];
+    return newFlipped;
+  })
+}
+    >
+      <div className="absolute inset-0 transition-transform duration-500 [transform-style:preserve-3d]" style={{
+  transform: flippedCards[i] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+}}>
+        <div className={`absolute inset-0 p-6 rounded-xl shadow-xl border-2 bg-white text-center flex flex-col justify-center items-center ${suit.color === 'red' ? 'border-red-600 text-red-700' : 'border-black text-black'} [backface-visibility:hidden]`}>
+          <img src={suit.src} alt="suit" className="absolute top-3 left-3 w-5 h-5" />
+          <img src={suit.src} alt="suit" className="absolute bottom-3 right-3 w-5 h-5 rotate-180" />
+          <img src={card.icon} alt={`${card.title} icon`} className="w-10 h-10 mb-2" />
+          <h3 className="text-2xl font-bold mb-3">{card.title}</h3>
+          {card.content}
+        </div>
 
-  <div className="flex flex-col items-center justify-center text-center">
-    <img
-      src={card.icon}
-      alt={`${card.title} icon`}
-      className="w-10 h-10 mb-2"
-    />
-    <h3 className="text-2xl font-bold mb-3">{card.title}</h3>
-    {card.content}
-  </div>
-</motion.div>
-
+        <div className="absolute inset-0 rounded-xl shadow-xl bg-gray-100 text-black text-center flex flex-col justify-center items-center [transform:rotateY(180deg)] [backface-visibility:hidden]">
+          <img src={"/assets/cardback.png"} alt="back" className="object-fill rounded-xl w-64 h-80" />
+        </div>
+      </div>
+    </motion.div>
   );
 })}
   </div>
+            </Section>
+            <Section
+  id="fun"
+  setActiveSection={setActiveSection}
+  ref={(el) => { if (el) sectionRefs.current.fun = el; }}
+>
+  <div className="flex flex-col gap-4 mb-6 items-center justify-center">
+
+    <h2 className="text-3xl font-semibold underline">Fun</h2>
+    <button
+      onClick={() => setShowSlotMachine(true)}
+      className="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded"
+    >
+      🎰 Open Slot Machine
+    </button>
+    <button
+      onClick={() => setShowCardOpener(true)}
+      className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+    >
+      🎴 Open Card Pack
+    </button>
+  </div>
 </Section>
 
+          {/* SlotMachine Modal */}
+{showSlotMachine && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-6">
+    <div className="bg-gray-900 rounded-lg p-6 w-full max-w-5xl relative">
+      <button
+        onClick={() => setShowSlotMachine(false)}
+        className="absolute top-2 right-2 text-gray-300 hover:text-white text-xl"
+      >
+        ✖
+      </button>
+      <SlotMachine />
+    </div>
+  </div>
+)}
+
+{/* CardPackOpener Modal */}
+{showCardOpener && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-6">
+    <div className="bg-gray-900 rounded-lg p-6 w-full max-w-5xl relative">
+      <button
+        onClick={() => setShowCardOpener(false)}
+        className="absolute top-2 right-2 text-gray-300 hover:text-white text-xl"
+      >
+        ✖
+      </button>
+      <CardPackOpener />
+    </div>
+  </div>
+)}
 
           </motion.main>
         </>
