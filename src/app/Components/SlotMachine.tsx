@@ -190,12 +190,12 @@ const evaluateResult = (grid: string[][]) => {
 {spinning ? 'Spinning...' : `Spin (${bet} coins) 🎰`}
 </button>
 
-      <button
+      {/* <button
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg mt-2"
             onClick={() => setCoins((prev) => prev + 50)}
             >
             ➕ Add 50 Coins
-            </button>
+            </button> */}
 
       {message && (
         <motion.div
