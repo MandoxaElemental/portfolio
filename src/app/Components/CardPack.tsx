@@ -37,38 +37,44 @@ export const CardPackOpener: React.FC = () => {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const cardRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  const allCards: Card[] = [
-    { name: 'Green Goblin', image: 'goblin.png', rarity: 'Common', moves: ['Poison Dagger'] },
-    { name: 'Cave Rat', image: 'cave-rat.png', rarity: 'Common', moves: ['Gnaw'] },
-    { name: 'Rusty Golem', image: 'rusty-golem.png', rarity: 'Common', moves: ['Smash'] },
-    { name: 'Forest Imp', image: 'forest-imp.png', rarity: 'Common', moves: ['Vine Whip'] },
-    { name: 'River Sprite', image: 'river-sprite.png', rarity: 'Common', moves: ['Water Jet'] },
-    { name: 'Knight', image: 'knight.png', rarity: 'Uncommon', moves: ['Shield Bash'] },
-    { name: 'Shadow Rogue', image: 'shadow-rogue.png', rarity: 'Uncommon', moves: ['Backstab'] },
-    { name: 'Lava Hound', image: 'lava-hound.png', rarity: 'Uncommon', moves: ['Magma Bite'] },
-    { name: 'Sand Witch', image: 'sand-witch.png', rarity: 'Uncommon', moves: ['Dust Hex'] },
-    { name: 'Tundra Wolf', image: 'tundra-wolf.png', rarity: 'Uncommon', moves: ['Frost Fang'] },
-    { name: 'Dragon Egg', image: 'egg.png', rarity: 'Rare', moves: ['Hatch Shock'] },
-    { name: 'Stormcaller', image: 'stormcaller.png', rarity: 'Rare', moves: ['Lightning Surge'] },
-    { name: 'Crystal Seer', image: 'crystal-seer.png', rarity: 'Rare', moves: ['Clairvoyant Ray'] },
-    { name: 'Steel Basilisk', image: 'steel-basilisk.png', rarity: 'Rare', moves: ['Iron Glare'] },
-    { name: 'Wraith Captain', image: 'wraith-captain.png', rarity: 'Rare', moves: ['Spectral Slash'] },
-    { name: 'Rainbow Phoenix', image: 'phoenix.png', rarity: 'Epic', moves: ['Blaze Wing'], ability: 'Rebirth' },
-    { name: 'Astral Paladin', image: 'astral-paladin.png', rarity: 'Epic', moves: ['Starstrike', 'Holy Barrier'] },
-    { name: 'Doomsmith', image: 'doomsmith.png', rarity: 'Epic', moves: ['Anvil Crush'], ability: 'Forge Curse' },
-    { name: 'Plague Harbinger', image: 'plague-harbinger.png', rarity: 'Epic', moves: ['Toxic Bloom', 'Death Spores'] },
-    { name: 'Volcanic Chimera', image: 'volcanic-chimera.png', rarity: 'Epic', moves: ['Lava Roar'], ability: 'Molten Regrowth' },
-    { name: 'Time Lord', image: 'timelord.png', rarity: 'Legendary', moves: ['Temporal Slash'], ability: 'Rewind Turn' },
-    { name: 'Celestial Dragon', image: 'celestial-dragon.png', rarity: 'Legendary', moves: ['Starfire Breath', 'Heavenly Roar'] },
-    { name: 'The First Blade', image: 'first-blade.png', rarity: 'Legendary', moves: ['Primordial Cut'], ability: 'Echo Strike' },
-    { name: 'Quantum Djinn', image: 'quantum-djinn.png', rarity: 'Legendary', moves: ['Reality Rift', 'Phase Blast'] },
-    { name: 'Bloodmoon Guardian', image: 'bloodmoon-guardian.png', rarity: 'Legendary', moves: ['Lunar Fang'], ability: 'Red Eclipse' },
-    { name: 'Eclipse Beast', image: 'eclipse-beast.png', rarity: 'Mythical', moves: ['Void Claw'], ability: 'Total Eclipse' },
-    { name: 'World Serpent', image: 'world-serpent.png', rarity: 'Mythical', moves: ['Continental Crush', 'Tectonic Coil'] },
-    { name: 'Chrono Witch', image: 'chrono-witch.jpg', rarity: 'Mythical', moves: ['Hourglass Hex'], ability: 'Time Bend' },
-    { name: 'Oblivion Angel', image: 'oblivion-angel.png', rarity: 'Mythical', moves: ['Fallen Light', 'Silence of Fate'] },
-    { name: 'Prism Golem', image: 'prism-golem.png', rarity: 'Mythical', moves: ['Spectral Shard'], ability: 'Refract Shield' },
+const allCards: Card[] = [
+    { name: 'Spottle', image: 'Bug.png', rarity: 'Common', moves: ['Bug Buzz'] },
+    { name: 'Bagsack', image: 'Bag.png', rarity: 'Common', moves: ['Pummel'] },
+    { name: 'Nuzzumi', image: 'Rodent.png', rarity: 'Common', moves: ['Zip Zap'] },
+    { name: 'Bouffee', image: 'Sugar.png', rarity: 'Common', moves: ['Sugary Shot'] },
+    { name: 'Jinxi', image: 'Luck.png', rarity: 'Common', moves: ['Unluck'] },
+
+    { name: 'Virixen', image: 'GrassBuddy.png', rarity: 'Uncommon', moves: ['Petal Lash'] },
+    { name: 'Tsnoko', image: 'Snek.png', rarity: 'Uncommon', moves: ['Sneaky Bite'] },
+    { name: 'Salember', image: 'FireBuddy.png', rarity: 'Uncommon', moves: ['Burning Bite'] },
+    { name: 'Curshire', image: 'Cat.png', rarity: 'Uncommon', moves: ['Grinning Hex'] },
+    { name: 'Porpuddle', image: 'WaterBuddy.png', rarity: 'Uncommon', moves: ['Bubble Burst'] },
+
+    { name: 'Hakuma', image: 'Bear.png', rarity: 'Rare', moves: ['Crushing Hug'] },
+    { name: 'Hauntkins', image: 'Ghost.png', rarity: 'Rare', moves: ['Poltergeist'] },
+    { name: 'Drangoon', image: 'Blue.png', rarity: 'Rare', moves: ['Dragon Rage'] },
+    { name: 'Rookiraven', image: 'Crow.png', rarity: 'Rare', moves: ['Night Slash'] },
+    { name: 'Ignhaust', image: 'Flame.png', rarity: 'Rare', moves: ['Inferno Overdrive'] },
+
+    { name: 'Calverus', image: 'Knight.png', rarity: 'Epic', moves: ['Energy Lance'], ability: 'Inspire' },
+    { name: 'Yokoni', image: 'Oni.png', rarity: 'Epic', moves: ['Ogre Club', 'Beatdown'] },
+    { name: 'Hussarrior', image: 'Knight2.png', rarity: 'Epic', moves: ['Verdant Blades'], ability: 'Justified' },
+    { name: 'Kitsune', image: 'Kitsune.png', rarity: 'Epic', moves: ['Fox Trick', 'Spirit Rush'] },
+    { name: 'Minocharge', image: 'Knight3.png', rarity: 'Epic', moves: ['Axe Charge'], ability: 'Merciless' },
+
+    { name: 'Cybele', image: 'Plant.png', rarity: 'Legendary', moves: ['Temporal Slash'], ability: 'Forest Blessing' },
+    { name: 'Triton', image: 'Water.png', rarity: 'Legendary', moves: ['Torrential Crash', 'Flowing Trident'] },
+    { name: 'Gigantis', image: 'Rock.png', rarity: 'Legendary', moves: ['Continental Crush'], ability: 'Sentinel' },
+    { name: 'Helios', image: 'Fire.png', rarity: 'Legendary', moves: ['Flame Drive', 'Triple Slice'] },
+    { name: 'Hecate', image: 'Dark.png', rarity: 'Legendary', moves: ['Wicked Curse'], ability: 'Twisted Oath' },
+
+    { name: 'Zhuque', image: 'Vermilion.png', rarity: 'Mythical', moves: ['Vermilion Burst'], ability: 'Southern Summer' },
+    { name: 'Baihu', image: 'White.png', rarity: 'Mythical', moves: ['White Slash'], ability: 'Western Autumn' },
+    { name: 'Chronos', image: 'Chronos.png', rarity: 'Mythical', moves: ['Space-Time Shutdown'], ability: 'Temporal Hex' },
+    { name: 'Qinlong', image: 'Azure.png', rarity: 'Mythical', moves: ['Azure Pulse'], ability: 'Eastern Spring' },
+    { name: 'Xuanwu', image: 'Black.png', rarity: 'Mythical', moves: ['Black Takedown'], ability: 'Northern Winter' },
   ];
+
 
   // Load data from local storage on mount
   useEffect(() => {
@@ -222,7 +228,7 @@ export const CardPackOpener: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-6 text-white">
-      <h2 className="text-2xl font-bold mb-4">🎴 Card Pack Opening</h2>
+      <h2 className="text-2xl font-bold mb-4">Card Pack Opening</h2>
       <div className="text-sm text-gray-400 mb-4">{storageStatus}</div>
       <div className="flex gap-4 mb-6">
         <button
@@ -273,7 +279,7 @@ export const CardPackOpener: React.FC = () => {
                       alt={card.name}
                       width={200}
                       height={200}
-                      className="mb-2 w-full h-auto rounded-t-lg"
+                      className="mb-2 w-[150px] h-auto rounded-t-lg"
                     />
                     <div className="font-bold">{card.name}</div>
                     <div className={`text-sm opacity-80 mb-1 ${card.rarity === "Mythical" ? 'text-[#ffd700]' : 'text-white'}`}>{getRarityIcon(card.rarity)}</div>

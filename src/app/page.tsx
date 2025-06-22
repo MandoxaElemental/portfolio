@@ -13,7 +13,7 @@ import { CardPackOpener } from './Components/CardPack';
 
 const sectionBackgrounds: Record<string, string> = {
   welcome: 'bg-gradient-to-br from-[#F32735] via-[#B22222] to-black',
-  about: 'bg-gradient-to-br from-[#FFF8DC] via-[#F5F5DC] to-[#2F4F4F]',
+  about: 'bg-gradient-to-µbr from-[#FFF8DC] via-[#F5F5DC] to-[#2F4F4F]',
   projects: 'bg-gradient-to-br from-black via-[#F32735] to-black',
   skills: 'bg-gradient-to-br from-black via-[#1C1C1C] to-[#2F4F4F]',
   contact: 'bg-gradient-to-br from-[#FFF8DC] via-[#F5F5DC] to-[#2F4F4F]',
